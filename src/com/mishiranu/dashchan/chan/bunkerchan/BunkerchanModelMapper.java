@@ -1,4 +1,4 @@
-package com.mishiranu.dashchan.chan.endchan;
+package com.mishiranu.dashchan.chan.bunkerchan;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -20,8 +20,8 @@ import chan.content.model.Posts;
 import chan.util.CommonUtils;
 import chan.util.StringUtils;
 
-public class EndchanModelMapper {
-	public static FileAttachment createFileAttachment(JSONObject jsonObject, EndchanChanLocator locator)
+public class BunkerchanModelMapper {
+	public static FileAttachment createFileAttachment(JSONObject jsonObject, BunkerchanChanLocator locator)
 			throws JSONException {
 		FileAttachment attachment = new FileAttachment();
 		attachment.setSize(jsonObject.optInt("size"));
@@ -52,7 +52,7 @@ public class EndchanModelMapper {
 			"(\\d+)(.html#\\2\")");
 	private static final Pattern PATTERN_COLORED_TEXT = Pattern.compile("<span class=\"(\\w+)Text\">");
 
-	public static Post createPost(JSONObject jsonObject, EndchanChanLocator locator, String threadNumber)
+	public static Post createPost(JSONObject jsonObject, BunkerchanChanLocator locator, String threadNumber)
 			throws JSONException, ParseException {
 		Post post = new Post();
 		if (jsonObject.optInt("pinned") != 0) {
@@ -160,7 +160,7 @@ public class EndchanModelMapper {
 		return post;
 	}
 
-	public static Posts createPosts(JSONObject jsonObject, EndchanChanLocator locator) throws JSONException,
+	public static Posts createPosts(JSONObject jsonObject, BunkerchanChanLocator locator) throws JSONException,
 			ParseException {
 		Post originalPost = createPost(jsonObject, locator, null);
 		JSONArray jsonArray = jsonObject.optJSONArray("posts");
@@ -175,7 +175,7 @@ public class EndchanModelMapper {
 		return new Posts(posts);
 	}
 
-	public static Posts[] createThreads(JSONArray jsonArray, EndchanChanLocator locator) throws JSONException,
+	public static Posts[] createThreads(JSONArray jsonArray, BunkerchanChanLocator locator) throws JSONException,
 			ParseException {
 		if (jsonArray != null && jsonArray.length() > 0) {
 			Posts[] threads = new Posts[jsonArray.length()];

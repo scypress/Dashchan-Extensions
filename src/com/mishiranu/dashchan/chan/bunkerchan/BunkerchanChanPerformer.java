@@ -1,4 +1,4 @@
-package com.mishiranu.dashchan.chan.endchan;
+package com.mishiranu.dashchan.chan.bunkerchan;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,12 +31,12 @@ import chan.http.SimpleEntity;
 import chan.util.CommonUtils;
 import chan.util.StringUtils;
 
-public class EndchanChanPerformer extends ChanPerformer {
+public class BunkerchanChanPerformer extends ChanPerformer {
 	private static final String[] BOARDS_GENERAL = {"operate"};
 
 	@Override
 	public ReadThreadsResult onReadThreads(ReadThreadsData data) throws HttpException, InvalidResponseException {
-		EndchanChanLocator locator = EndchanChanLocator.get(this);
+		BunkerchanChanLocator locator = BunkerchanChanLocator.get(this);
 		if (data.isCatalog()) {
 			Uri uri = locator.buildPath(data.boardName, "catalog.json");
 			JSONArray jsonArray = new HttpRequest(uri, data).setValidator(data.validator).read().getJsonArray();
@@ -47,7 +47,7 @@ public class EndchanChanPerformer extends ChanPerformer {
 				return null;
 			}
 			try {
-				return new ReadThreadsResult(EndchanModelMapper.createThreads(jsonArray, locator));
+				return new ReadThreadsResult(BunkerchanModelMapper.createThreads(jsonArray, locator));
 			} catch (JSONException | ParseException e) {
 				throw new InvalidResponseException(e);
 			}
@@ -58,7 +58,7 @@ public class EndchanChanPerformer extends ChanPerformer {
 				throw new InvalidResponseException();
 			}
 			if (data.pageNumber == 0) {
-				EndchanChanConfiguration configuration = EndchanChanConfiguration.get(this);
+				BunkerchanChanConfiguration configuration = BunkerchanChanConfiguration.get(this);
 				configuration.updateFromThreadsJson(data.boardName, jsonObject, true);
 			}
 			JSONArray jsonArray = jsonObject.optJSONArray("threads");
@@ -66,7 +66,7 @@ public class EndchanChanPerformer extends ChanPerformer {
 				return null;
 			}
 			try {
-				return new ReadThreadsResult(EndchanModelMapper.createThreads(jsonArray, locator));
+				return new ReadThreadsResult(BunkerchanModelMapper.createThreads(jsonArray, locator));
 			} catch (JSONException | ParseException e) {
 				throw new InvalidResponseException(e);
 			}
@@ -75,12 +75,12 @@ public class EndchanChanPerformer extends ChanPerformer {
 
 	@Override
 	public ReadPostsResult onReadPosts(ReadPostsData data) throws HttpException, InvalidResponseException {
-		EndchanChanLocator locator = EndchanChanLocator.get(this);
+		BunkerchanChanLocator locator = BunkerchanChanLocator.get(this);
 		Uri uri = locator.buildPath(data.boardName, "res", data.threadNumber + ".json");
 		JSONObject jsonObject = new HttpRequest(uri, data).setValidator(data.validator).read().getJsonObject();
 		if (jsonObject != null) {
 			try {
-				return new ReadPostsResult(EndchanModelMapper.createPosts(jsonObject, locator));
+				return new ReadPostsResult(BunkerchanModelMapper.createPosts(jsonObject, locator));
 			} catch (JSONException | ParseException e) {
 				throw new InvalidResponseException(e);
 			}
@@ -90,8 +90,8 @@ public class EndchanChanPerformer extends ChanPerformer {
 
 	@Override
 	public ReadBoardsResult onReadBoards(ReadBoardsData data) throws HttpException, InvalidResponseException {
-		EndchanChanLocator locator = EndchanChanLocator.get(this);
-		EndchanChanConfiguration configuration = EndchanChanConfiguration.get(this);
+		BunkerchanChanLocator locator = BunkerchanChanLocator.get(this);
+		BunkerchanChanConfiguration configuration = BunkerchanChanConfiguration.get(this);
 		Board[] boards = new Board[BOARDS_GENERAL.length];
 		try {
 			for (int i = 0; i < BOARDS_GENERAL.length; i++) {
@@ -114,7 +114,7 @@ public class EndchanChanPerformer extends ChanPerformer {
 	@Override
 	public ReadUserBoardsResult onReadUserBoards(ReadUserBoardsData data) throws HttpException,
 			InvalidResponseException {
-		EndchanChanLocator locator = EndchanChanLocator.get(this);
+		BunkerchanChanLocator locator = BunkerchanChanLocator.get(this);
 		Uri uri = locator.buildQuery("boards.js", "json", "1");
 		JSONObject jsonObject = new HttpRequest(uri, data).read().getJsonObject();
 		if (jsonObject != null) {
@@ -152,7 +152,7 @@ public class EndchanChanPerformer extends ChanPerformer {
 	@Override
 	public ReadPostsCountResult onReadPostsCount(ReadPostsCountData data) throws HttpException,
 			InvalidResponseException {
-		EndchanChanLocator locator = EndchanChanLocator.get(this);
+		BunkerchanChanLocator locator = BunkerchanChanLocator.get(this);
 		Uri uri = locator.buildPath(data.boardName, "res", data.threadNumber + ".json");
 		JSONObject jsonObject = new HttpRequest(uri, data).setValidator(data.validator).read().getJsonObject();
 		if (jsonObject != null) {
@@ -173,7 +173,7 @@ public class EndchanChanPerformer extends ChanPerformer {
 		if (REQUIRE_REPORT.equals(data.requirement)) {
 			needCaptcha = true;
 		} else if (data.threadNumber == null) {
-			EndchanChanLocator locator = EndchanChanLocator.get(this);
+			BunkerchanChanLocator locator = BunkerchanChanLocator.get(this);
 			Uri uri = locator.createBoardUri(data.boardName, 0);
 			String responseText = new HttpRequest(uri, data).read().getString();
 			if (responseText.contains("<div id=\"captchaDiv\">")) {
@@ -182,7 +182,7 @@ public class EndchanChanPerformer extends ChanPerformer {
 		}
 
 		if (needCaptcha) {
-			EndchanChanLocator locator = EndchanChanLocator.get(this);
+			BunkerchanChanLocator locator = BunkerchanChanLocator.get(this);
 			Uri uri = locator.buildPath("captcha.js");
 			Bitmap image = new HttpRequest(uri, data).read().getBitmap();
 			String captchaId = data.holder.getCookieValue("captchaid");
@@ -219,7 +219,7 @@ public class EndchanChanPerformer extends ChanPerformer {
 
 	@Override
 	public SendPostResult onSendPost(SendPostData data) throws HttpException, ApiException, InvalidResponseException {
-		EndchanChanLocator locator = EndchanChanLocator.get(this);
+		BunkerchanChanLocator locator = BunkerchanChanLocator.get(this);
 		SimpleEntity entity = new SimpleEntity();
 		entity.setContentType("application/json; charset=utf-8");
 		JSONObject jsonObject = new JSONObject();
@@ -340,7 +340,7 @@ public class EndchanChanPerformer extends ChanPerformer {
 			return new SendPostResult(threadNumber, postNumber);
 		}
 		if (!"error".equals(status) && !"blank".equals(status)) {
-			CommonUtils.writeLog("Endchan send message", jsonObject.toString());
+			CommonUtils.writeLog("Bunkerchan send message", jsonObject.toString());
 			throw new InvalidResponseException();
 		}
 		String errorMessage = jsonObject.optString("data");
@@ -361,7 +361,7 @@ public class EndchanChanPerformer extends ChanPerformer {
 			if (errorType != 0) {
 				throw new ApiException(errorType);
 			}
-			CommonUtils.writeLog("Endchan send message", status, errorMessage);
+			CommonUtils.writeLog("Bunkerchan send message", status, errorMessage);
 			throw new ApiException(status + ": " + errorMessage);
 		}
 		throw new InvalidResponseException();
@@ -401,7 +401,7 @@ public class EndchanChanPerformer extends ChanPerformer {
 		SimpleEntity entity = new SimpleEntity();
 		entity.setContentType("application/json; charset=utf-8");
 		entity.setData(jsonObject.toString());
-		EndchanChanLocator locator = EndchanChanLocator.get(this);
+		BunkerchanChanLocator locator = BunkerchanChanLocator.get(this);
 		Uri uri = locator.buildPath(".api", "deleteContent");
 		jsonObject = new HttpRequest(uri, data).setPostMethod(entity)
 				.setRedirectHandler(HttpRequest.RedirectHandler.STRICT).read().getJsonObject();
@@ -414,7 +414,7 @@ public class EndchanChanPerformer extends ChanPerformer {
 				if (errorMessage.contains("Invalid account")) {
 					throw new ApiException(ApiException.DELETE_ERROR_PASSWORD);
 				}
-				CommonUtils.writeLog("Endchan delete message", errorMessage);
+				CommonUtils.writeLog("Bunkerchan delete message", errorMessage);
 				throw new ApiException(errorMessage);
 			}
 		}
@@ -461,7 +461,7 @@ public class EndchanChanPerformer extends ChanPerformer {
 			SimpleEntity entity = new SimpleEntity();
 			entity.setContentType("application/json; charset=utf-8");
 			entity.setData(jsonObject.toString());
-			EndchanChanLocator locator = EndchanChanLocator.get(this);
+			BunkerchanChanLocator locator = BunkerchanChanLocator.get(this);
 			Uri uri = locator.buildPath(".api", "reportContent");
 			JSONObject responseJsonObject = new HttpRequest(uri, data).setPostMethod(entity)
 					.setRedirectHandler(HttpRequest.RedirectHandler.STRICT).read().getJsonObject();
@@ -477,7 +477,7 @@ public class EndchanChanPerformer extends ChanPerformer {
 				if (errorMessage.contains("Wrong captcha") || errorMessage.contains("Expired captcha")) {
 					continue;
 				}
-				CommonUtils.writeLog("Endchan report message", status, errorMessage);
+				CommonUtils.writeLog("Bunkerchan report message", status, errorMessage);
 				throw new ApiException(status + ": " + errorMessage);
 			}
 			throw new InvalidResponseException();

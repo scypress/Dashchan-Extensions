@@ -1,4 +1,4 @@
-package com.mishiranu.dashchan.chan.endchan;
+package com.mishiranu.dashchan.chan.bunkerchan;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -8,11 +8,11 @@ import android.util.Pair;
 import chan.content.ChanMarkup;
 import chan.text.CommentEditor;
 
-public class EndchanChanMarkup extends ChanMarkup {
+public class BunkerchanChanMarkup extends ChanMarkup {
 	private static final int SUPPORTED_TAGS = TAG_BOLD | TAG_ITALIC | TAG_UNDERLINE | TAG_STRIKE | TAG_SPOILER
 			| TAG_CODE | TAG_ASCII_ART | TAG_HEADING;
 
-	public EndchanChanMarkup() {
+	public BunkerchanChanMarkup() {
 		addTag("strong", TAG_BOLD);
 		addTag("em", TAG_ITALIC);
 		addTag("u", TAG_UNDERLINE);
@@ -44,7 +44,7 @@ public class EndchanChanMarkup extends ChanMarkup {
 	@Override
 	public boolean isTagSupported(String boardName, int tag) {
 		if (tag == TAG_CODE) {
-			EndchanChanConfiguration configuration = EndchanChanConfiguration.get(this);
+			BunkerchanChanConfiguration configuration = BunkerchanChanConfiguration.get(this);
 			return configuration.isTagSupported(boardName, tag);
 		}
 		return (SUPPORTED_TAGS & tag) == tag;

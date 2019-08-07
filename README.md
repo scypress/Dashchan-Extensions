@@ -1,6 +1,6 @@
-# Dashchan Extension: endchan
+# Dashchan Extension: bunkerchan
 
-Extension for endchan.xyz.
+Extension for bunkerchan.xyz.
 
 ## License
 

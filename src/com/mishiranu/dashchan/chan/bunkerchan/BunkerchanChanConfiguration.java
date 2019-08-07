@@ -1,4 +1,4 @@
-package com.mishiranu.dashchan.chan.endchan;
+package com.mishiranu.dashchan.chan.bunkerchan;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -10,17 +10,17 @@ import android.util.Pair;
 import chan.content.ChanConfiguration;
 import chan.util.CommonUtils;
 
-public class EndchanChanConfiguration extends ChanConfiguration {
+public class BunkerchanChanConfiguration extends ChanConfiguration {
 	private static final String KEY_NAMES_ENABLED = "names_enabled";
 	private static final String KEY_FLAGS_ENABLED = "flags_enabled";
 	private static final String KEY_DELETE_ENABLED = "delete_enabled";
 	private static final String KEY_CODE_ENABLED = "code_enabled";
 
-	public EndchanChanConfiguration() {
+	public BunkerchanChanConfiguration() {
 		request(OPTION_READ_POSTS_COUNT);
 		request(OPTION_READ_USER_BOARDS);
 		setDefaultName("Anonymous");
-		addCaptchaType("endchan");
+		addCaptchaType("bunkerchan");
 	}
 
 	@Override
@@ -35,9 +35,9 @@ public class EndchanChanConfiguration extends ChanConfiguration {
 
 	@Override
 	public Captcha obtainCustomCaptchaConfiguration(String captchaType) {
-		if ("endchan".equals(captchaType)) {
+		if ("bunkerchan".equals(captchaType)) {
 			Captcha captcha = new Captcha();
-			captcha.title = "Endchan";
+			captcha.title = "Bunkerchan";
 			captcha.input = Captcha.Input.ALL;
 			captcha.validity = Captcha.Validity.IN_BOARD_SEPARATELY;
 			return captcha;
@@ -93,7 +93,7 @@ public class EndchanChanConfiguration extends ChanConfiguration {
 	}
 
 	public boolean isTagSupported(String boardName, int tag) {
-		if (tag == EndchanChanMarkup.TAG_CODE) {
+		if (tag == BunkerchanChanMarkup.TAG_CODE) {
 			return get(boardName, KEY_CODE_ENABLED, false);
 		}
 		return false;

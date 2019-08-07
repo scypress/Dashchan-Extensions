@@ -1,4 +1,4 @@
-package com.mishiranu.dashchan.chan.endchan;
+package com.mishiranu.dashchan.chan.bunkerchan;
 
 import java.util.List;
 import java.util.regex.Pattern;
@@ -8,15 +8,13 @@ import android.webkit.MimeTypeMap;
 
 import chan.content.ChanLocator;
 
-public class EndchanChanLocator extends ChanLocator {
+public class BunkerchanChanLocator extends ChanLocator {
 	private static final Pattern BOARD_PATH = Pattern.compile("/\\w+(?:/(?:(?:catalog|\\d+)\\.html)?)?");
 	private static final Pattern THREAD_PATH = Pattern.compile("/\\w+/res/(\\d+)\\.html");
 	private static final Pattern ATTACHMENT_PATH = Pattern.compile("/\\.media/.*");
 
-	public EndchanChanLocator() {
-		addChanHost("endchan.xyz");
-		addChanHost("endchan.pw");
-		addChanHost("endchan.net");
+	public BunkerchanChanLocator() {
+		addChanHost("bunkerchan.xyz");
 		setHttpsMode(HttpsMode.CONFIGURABLE);
 	}
 
