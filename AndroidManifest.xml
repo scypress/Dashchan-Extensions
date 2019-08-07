@@ -29,6 +29,8 @@
 				<data android:scheme="http" />
 				<data android:scheme="https" />
 				<data android:host="bunkerchan.xyz" />
+				<data android:host="bunkerchan.pw" />
+				<data android:host="bunkerchan.net" />
 			</intent-filter>
 
 		</activity>

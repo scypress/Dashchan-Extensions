@@ -15,6 +15,8 @@ public class BunkerchanChanLocator extends ChanLocator {
 
 	public BunkerchanChanLocator() {
 		addChanHost("bunkerchan.xyz");
+		addChanHost("bunkerchan.pw");
+		addChanHost("bunkerchan.net");
 		setHttpsMode(HttpsMode.CONFIGURABLE);
 	}
 
